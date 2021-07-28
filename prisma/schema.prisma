@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model clients {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique @db.VarChar(100)
+  password       String    @db.VarChar(100)
+  institution    String    @db.VarChar(100)
+  department     String    @db.VarChar(100)
+  position       String    @db.VarChar(100)
+  name           String    @db.VarChar(100)
+  institutionKey String    @db.VarChar(100)
+  dbIP           String?   @db.VarChar(100)
+  dbType         String?   @db.VarChar(100)
+  dbPort         Int?
+  dbID           String?   @db.VarChar(100)
+  dbPW           String?   @db.VarChar(100)
+  configs        configs[]
+}
+
+model configs {
+  id         Int     @id @default(autoincrement())
+  endpoint   String? @db.VarChar(100)
+  data_type  String? @db.VarChar(100)
+  client_key Int
+  password   String? @db.VarChar(100)
+  term       String? @db.VarChar(100)
+  crontab    String? @db.VarChar(100)
+  jobname    String? @db.VarChar(100)
+  username   String? @db.VarChar(100)
+  action     String? @db.VarChar(100)
+  toggle     Int?    @default(0) @db.TinyInt
+  clients    clients @relation(fields: [client_key], references: [id])
+
+  @@index([client_key], name: "configs_FK")
+}
+
+model config_logger {
+  id      Int      @id @default(autoincrement())
+  time    DateTime @db.DateTime(0)
+  status  String   @db.VarChar(100)
+  message String   @db.LongText
+}
+
+model compare_temporary {
+  id     Int @id @default(autoincrement())
+  config Int
+}
