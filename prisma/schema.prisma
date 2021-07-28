@@ -40,15 +40,3 @@ model configs {
 
   @@index([client_key], name: "configs_FK")
 }
-
-model config_logger {
-  id      Int      @id @default(autoincrement())
-  time    DateTime @db.DateTime(0)
-  status  String   @db.VarChar(100)
-  message String   @db.LongText
-}
-
-model compare_temporary {
-  id     Int @id @default(autoincrement())
-  config Int
-}
